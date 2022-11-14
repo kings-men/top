@@ -29,7 +29,7 @@ class FileUploadRequest extends FormRequest
 
         return [
             'file'=>'required|mimetypes:image/jpeg,image/png,image/jpg,image/gif',
-            'path' =>'required|string',
+            'file_type' =>'required|string',
         ];
     }
 

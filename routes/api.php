@@ -80,9 +80,13 @@ Route::group(['prefix' => 'technician','middleware' => ['auth:sanctum','role.val
     Route::post('profile',[API\Provider\ProviderController::class,'updateProfile']);
     Route::get('profile',[API\Provider\ProviderController::class,'profile']);
 
-    //Get List of Latest Jobs for Technician
+    //Jobs API Technician
     Route::get('jobs',[API\Provider\ProviderJobController::class,'jobs']);
+    Route::get('job/{uuid}',[API\Restaurant\RestaurantJobController::class,'jobDetail']);
 
+    //Provider Payment Methods
+    Route::resource('provider_payment_methods', App\Http\Controllers\API\ProviderPaymentMethodAPIController::class);
+    //Route::put('provider_payment_methods/{id}', [App\Http\Controllers\API\ProviderPaymentMethodAPIController::class,'update']);
 });
 
 

@@ -34,11 +34,15 @@ use App\Models\HandymanRating;
 use App\Models\ProviderSubscription;
 use App\Models\BookingHandymanMapping;
 use App\Http\Resources\API\HandymanRatingResource;
+use App\Models\Company;
 use Customers;
 
 class UserController extends Controller
 {
 
+    public function __construct() {
+        $this->roles = array('restaurant','provider');
+     }
 
     public function saveProviderBank(ProviderBankDetailRequest $request){
 
@@ -74,31 +78,42 @@ class UserController extends Controller
         return comman_custom_response( $response );
     }
 
-    public function login()
-    {
+    public function login(){
+
+        if(empty(request('role')) && !in_array(request('role'),$this->roles) ){
+            return common_response( trans('auth.failed'), False, 400, $data=[] );
+        }
+
         if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
 
             $user = Auth::user();
             $user->save();
 
             $roleDetail = UserRole::where('user_id',$user->id)->with('roleDetail')->first();
-            if($roleDetail->roleDetail->name=='restaurant'){
-                $filter = array('uuid','display_name');
-            }else{
-                $filter = array('uuid','first_name','last_name');
+
+            if($roleDetail->roleDetail->name!=request('role')){
+                return common_response( trans('auth.failed'), False, 400, $data=[] );
             }
+
+            if($roleDetail->roleDetail->name=='restaurant'){
+
+                $filter = array('uuid','display_name');
+                $profile = Company::where('user_id',$user->id)->with('file')->first();
+                $profile_image = !isset($profile->file->name) ? Null : $profile->file->name;
+
+            }else{
+
+                $filter = array('uuid','first_name','last_name');
+                $profile = Provider::join('provider_documents','provider_documents.provider_id','=','providers.id')
+                            ->join('files','files.id','=','provider_documents.id')
+                            ->where('provider_documents.document_type','provider_profile_picture')->select('name')->first();
+                $profile_image = $profile_image = !isset($profile['name']) ? Null : $profile['name'];
+            }
+
             $success = User::where('id',$user->id)->with('state')->with('country')->select($filter)->first();
-
             $success['api_token'] = $user->createToken('auth_token')->plainTextToken;
-            $success['profile_image'] = getSingleMedia($user,'profile_image',null);
+            $success['profile_image'] = $profile_image;
             $success['role']   =   $roleDetail->roleDetail->name;
-
-            $is_verify_provider = false;
-
-            $success['is_verify_provider'] = (int) $is_verify_provider;
-            unset($success['media']);
-
-            unset($user['roles']);
 
             return common_response( trans('messages.login_success'), True, 200, $success );
 

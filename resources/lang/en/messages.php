@@ -435,6 +435,10 @@
         'equipment_saved' => 'Equipment has been registered successfully',
         'maintanance_deleted' => 'Maintanance Frequency deleted successfully',
         'not_authorized'   => 'You are not authorized',
+        'undefined_file_type'=>'File type is Un-defined!',
+        'file_uploaded'=>'File has been Uploaded',
+        'provider_payment_method_saved_successfully' => 'Provider Payment Method saved successfully',
+        'provider_payment_method_retrieved_successfully' => 'Provider Payment Method retrieved successfully',
 
         'order' => 'Order',
         'logo' => 'Logo Image',

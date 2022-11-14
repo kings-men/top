@@ -13,6 +13,23 @@ function getLatLong($address=null){
     return $latlong;
 }
 
+function getDirectory($type){
+    $file_type = array(
+        'restaurant_profile'        =>   'restaurants/profile/{uuid}',
+        'restaurant_job_documents'  =>   'restaurants/job/documents/{uuid}',
+        'restaurant_equipments'     =>   'restaurants/equipments/{uuid}',
+        'provider_profile'  =>   'providers/profile/{uuid}',
+        'provider_documents'=>   'providers/documents/{uuid}',
+    );
+    if(!empty($file_type[$type])){
+        return $file_type[$type];
+    }else{
+        return False;
+    }
+
+}
+
+
 function authSession($force=false){
     $session = new \App\Models\User;
     if($force){

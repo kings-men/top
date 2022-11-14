@@ -52,9 +52,9 @@ class Handler extends ExceptionHandler
 
     public function handleException($request, \Exception $exception)
     {
-        if($exception instanceof NotFoundHttpException) {
-            return response(['message'=>'The specified URL cannot be  found.'], 404);
-        }
+        // if($exception instanceof NotFoundHttpException) {
+        //     return response(['message'=>'The specified URL cannot be  found.'], 404);
+        // }
 
         if($exception instanceof MethodNotAllowedHttpException) {
             return response(['message'=>'The bad request cannot be  found.'], 404);
