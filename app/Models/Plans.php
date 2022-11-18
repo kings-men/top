@@ -22,4 +22,8 @@ class Plans extends Model
     public function staticdata(){
         return $this->belongsTo(StaticData::class,'plan_type', 'id');
     }
+
+    public function features(){
+        return $this->hasMany(PlanFeature::class,'plan_id', 'id');
+    }
 }

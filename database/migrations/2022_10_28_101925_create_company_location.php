@@ -17,8 +17,8 @@ class CreateCompanyLocation extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->unsignedBigInteger('company_id');
-            $table->unsignedBigInteger('state_id')->nullable();
-            $table->unsignedBigInteger('company_cusine_id')->nullable();
+            $table->unsignedInteger('state_id')->nullable();
+            $table->unsignedInteger('company_cusine_id')->nullable();
             $table->string('restaurant_name',255)->nullable();
             $table->string('contact_name',250);
             $table->string('email',250);
@@ -30,8 +30,8 @@ class CreateCompanyLocation extends Migration
             $table->boolean('bar')->default(True);
             $table->boolean('parking')->default(True);
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
-            // $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade');
-            // $table->foreign('company_cusine_id')->references('id')->on('company_cuisines')->onDelete('cascade');
+            $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade');
+            // $table->foreign('company_cusine_id')->references('id')->on('restaurant_cuisines')->onDelete('cascade');
             $table->timestamps();
         });
     }

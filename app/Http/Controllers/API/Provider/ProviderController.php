@@ -58,15 +58,17 @@ class ProviderController extends Controller
 
         $user           =   \Auth::user();
         $responseData   =   [];
-        $data           =   $request->except(['prfile_image','service']);
+        $data           =   $request->except(['prfile_image','service','email','phone']);
 
         if($request->has('service')){
             $services = $request->service;
         }
 
+        $ifFound = Provider::where('user_id',$user->id)->first('id');
+        if(empty($ifFound) && !isset($ifFound) ){
+            $data['uuid']   =   Str::orderedUuid();
+        }
 
-
-        $data['uuid']   =   Str::orderedUuid();
         $responseData   =   Provider::updateOrCreate(['user_id'=>$user->id],$data);
 
         if(isset($services)){

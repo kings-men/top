@@ -356,6 +356,21 @@ legend {
   color: inherit;
   white-space: normal;
 }
+.provider-bottom{
+	padding-top:25px;
+	padding-left:15px;
+}
+
+.provider-actions{
+	padding: 25px!important;
+	float:right!important;
+}
+.provider-actions a {
+	font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 5px;
+}
+
 @media (max-width: 1200px) {
   legend {
     font-size: calc(1.275rem + 0.3vw);

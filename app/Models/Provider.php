@@ -58,4 +58,10 @@ class Provider extends Model
     {
          return $this->belongsTo(User::class, 'user_id','id');
     }
+
+
+    public function providerPatymentMethod()
+    {
+        return $this->hasOne(\App\Models\ProviderPaymentMethod::class, 'provider_id', 'id');
+    }
 }

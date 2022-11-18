@@ -16,7 +16,7 @@ class CustomerController extends Controller
      */
     public function index(CustomerDataTable $dataTable)
     {
-        $pageTitle = __('messages.list_form_title',['form' => __('messages.user')] );
+        $pageTitle = __('messages.list_form_title',['form' => __('messages.restaurant_owner_users')] );
         $assets = ['datatable'];
         $auth_user = authSession();
         return $dataTable->render('customer.index', compact('pageTitle','assets','auth_user'));
@@ -87,14 +87,19 @@ class CustomerController extends Controller
     public function show($id)
     {
         $auth_user = authSession();
-        $customerdata = User::find($id);
+        // $customerdata = User::find($id);
+        $customerdata = User::with('companies')->where('id',$id)->first();
+
         if(empty($customerdata))
         {
             $msg = __('messages.not_found_entry',['name' => __('messages.user')] );
             return redirect(route('user.index'))->withError($msg);
         }
+        // $customer_pending_trans  = $customerdata->with('companies')->first();
+        // dd($customer_pending_trans->companies);
+        // dd($customer_pending_trans);
         $customer_pending_trans  = Payment::where('customer_id', $id)->where('payment_status','pending')->get();
-        $pageTitle = __('messages.view_form_title',['form'=> __('messages.user')]);
+        $pageTitle = __('messages.view_form_title',['form'=> __('messages.restaurant_owner_users')]);
         return view('customer.view', compact('pageTitle' ,'customerdata' ,'auth_user','customer_pending_trans' ));
     }
 

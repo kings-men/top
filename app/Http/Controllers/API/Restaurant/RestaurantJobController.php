@@ -67,7 +67,7 @@ class RestaurantJobController extends Controller
             }
 
 
-            $this->mailNearByProviders();
+            // $this->mailNearByProviders();
 
             $jobDetail->with('files');
             $responseData['id'] = $jobDetail->uuid;

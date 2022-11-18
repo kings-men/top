@@ -18,9 +18,6 @@
             <i class="far fa-trash-alt text-danger"></i>
         </a>
         @endif
-        @if(auth()->user()->hasAnyRole(['admin','provider']))
-            <!-- <a class="mr-2" href="{{ route('servicefaq.index',['id' => $service->id]) }}" title="{{ __('messages.add_form_title',['form' => __('messages.servicefaq') ]) }}"><i class="fas fa-plus text-primary"></i></a> -->
-        @endif
     @endif
     @if(auth()->user()->hasAnyRole(['admin']) && $service->trashed())
         <a href="{{ route('service.action',['id' => $service->id, 'type' => 'restore']) }}"

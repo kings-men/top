@@ -48,4 +48,5 @@ return [
     'success_verify_otp'    =>  'OTP verification success',
     'success_password_created'    =>  'Password has been created successfuly craeted.',
     'auth_failed'    =>  'User Credential does not match with Restaurant Credential.',
+    'request_failed' => 'Request Failed',
 ];

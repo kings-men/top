@@ -145,7 +145,8 @@ class ProviderPaymentMethod extends Model
      **/
     public function provider()
     {
-        return $this->hasOne(\App\Models\Provider::class, 'id', 'provider_id');
+        // return $this->hasOne(\App\Models\Provider::class, 'id', 'provider_id');
+        return $this->belongsTo(S\App\Models\Provider::class, 'id', 'provider_id');
     }
 
     /**

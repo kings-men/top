@@ -33,24 +33,9 @@ class ProviderDataTable extends DataTable
                 return $provider->states->name;
             })
             ->editColumn('status', function($provider) {
-                if($provider->status == '0'){
-                    $status = '<span class="badge badge-danger">'.__('messages.inactive').'</span>';
-                }else{
-                    $status = '<span class="badge badge-success">'.__('messages.active').'</span>';
-                }
+                $status = '<span>'. ucfirst($provider->status) .'</span>';
                 return $status;
             })
-            // ->editColumn('providertype_id', function($provider) {
-            //     return ($provider->providertype_id != null && isset($provider->providertype)) ? $provider->providertype->name : '-';
-            // })
-            // ->editColumn('address', function($provider) {
-            //     return ($provider->address != null && isset($provider->address)) ? $provider->address : '-';
-            // })
-            // ->filterColumn('providertype_id',function($query,$keyword){
-            //     $query->whereHas('providertype',function ($q) use($keyword){
-            //         $q->where('name','like','%'.$keyword.'%');
-            //     });
-            // })
             ->addColumn('action', function($provider){
                 return view('provider.action',compact('provider'))->render();
             })
@@ -67,14 +52,11 @@ class ProviderDataTable extends DataTable
     public function query(Provider $model)
     {
         $model = $model->with('user');
-        // $model = $model->where('user_type','provider');
-        // if(auth()->user()->hasAnyRole(['admin'])){
-        //     $model = $model->withTrashed();
-        // }
         if($this->list_status != null){
-            $model = $model->where('status',0);
+
+            $model = $model->where('status',"pending");
         } else {
-            $model = $model->where('status',1);
+            $model = $model->where('status',"approved");
         }
 
         return $model->newQuery()->orderBy('id','DESC');
@@ -100,8 +82,6 @@ class ProviderDataTable extends DataTable
                 ->orderable(false),
             Column::make('display_name')
                 ->title(__('messages.name')),
-            // Column::make('providertype_id')
-                // ->title(__('messages.providertype')),
             Column::make('contact_number'),
             Column::make('city'),
             Column::make('state')->title(__('messages.state')),

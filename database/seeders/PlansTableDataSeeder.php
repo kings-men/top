@@ -15,42 +15,30 @@ class PlansTableDataSeeder extends Seeder
     {
         \DB::table('plans')->delete();
         \DB::table('plans')->insert(array (
-            0 => 
             array (
                 'id' => 1,
                 'title' => 'Free plan',
                 'identifier' => 'free',
-                'type' => 'weekly',
-                'amount' => 0,
+                'type' => 'monthly',
+                'amount' => 99,
                 'trial_period' => 7,
                 'status' => 1,
+                'plan_price_id'=>'price_1M4fwXCtcJnsPYPIPbsm46A4',
                 'created_at' => '2022-03-10 11:26:15',
                 'updated_at' => '2022-03-10 11:26:15',
             ),
-            1 => 
             array (
                 'id' => 2,
                 'title' => 'Basic plan',
                 'identifier' => 'basic',
-                'type' => 'monthly',
-                'amount' => 10,
+                'type' => 'annualy',
+                'amount' => 999,
                 'trial_period' => NULL,
                 'status' => 1,
+                'plan_price_id'=>'price_1M4fxvCtcJnsPYPIOY4SBwAG',
                 'created_at' => '2022-03-10 11:26:15',
                 'updated_at' => '2022-03-10 11:26:15',
-            ),
-            2 => 
-            array (
-                'id' => 3,
-                'title' => 'Premium plan',
-                'identifier' => 'premium',
-                'type' => 'yearly',
-                'amount' => 100,
-                'trial_period' => NULL,
-                'status' => 1,
-                'created_at' => '2022-03-10 11:26:15',
-                'updated_at' => '2022-03-10 11:26:15',
-            ),
+            )
         ));
     }
 }

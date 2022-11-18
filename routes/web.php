@@ -67,6 +67,8 @@ Route::group(['middleware' => ['auth', 'verified']], function()
 
     Route::get('changeStatus', [ HomeController::class, 'changeStatus'])->name('changeStatus');
 
+    Route::get('changeProviderStatus/{id?}/{status?}', [ ProviderController::class, 'changeProviderStatus'])->name('changeProviderStatus');
+
     Route::resource('category', CategoryController::class);
     Route::post('category-action',[CategoryController::class, 'action'])->name('category.action');
     Route::resource('service', ServiceController::class);

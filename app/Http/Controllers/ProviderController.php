@@ -11,6 +11,10 @@ use App\Models\Service;
 use App\DataTables\ProviderDataTable;
 use App\DataTables\ServiceDataTable;
 use App\Http\Requests\UserRequest;
+use App\Mail\mailToProvider;
+use App\Mail\TestMail;
+use Mail;
+
 class ProviderController extends Controller
 {
     /**
@@ -133,9 +137,8 @@ class ProviderController extends Controller
     public function show(ServiceDataTable $dataTable,$id)
     {
         $auth_user = authSession();
-        // $providerdata = Provider::with('user')->where('id',$id)->first();
-        // dd($providerdata);
-        $providerdata = User::with('getServiceRating')->where('user_type','provider')->where('id',$id)->first();
+        $providerdata = Provider::with('user', 'providerPatymentMethod')->where('id',$id)->first();
+        
 
         if(empty($providerdata))
         {
@@ -143,6 +146,9 @@ class ProviderController extends Controller
             return redirect(route('provider.index'))->withError($msg);
         }
         $pageTitle = __('messages.view_form_title',['form'=> __('messages.provider')]);
+
+       // dd($dataTable);
+
         return $dataTable
         ->with('provider_id',$id)
         ->render('provider.view', compact('pageTitle' ,'providerdata' ,'auth_user' ));
@@ -209,5 +215,43 @@ class ProviderController extends Controller
         }
         
         return comman_custom_response(['message'=> $msg , 'status' => true]);
+    }
+
+    /**
+     * change provider status
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function changeProviderStatus($id, $status)
+    {
+
+        if($status === "approve"){
+            $providerStatus  = 'approved';
+        }elseif($status === "unapprove"){
+            $providerStatus  = 'suspended';
+        }
+
+        $provider = Provider::with('user')->where('id', $id)->first();
+
+        $updateStatus = $provider->update(['status'=> $providerStatus]);   
+
+        $theUpdatedData = $provider->refresh(); 
+        
+        $data = [
+            'first_name' => $theUpdatedData->user->first_name,
+            'last_name' => $theUpdatedData->user->last_name,
+            'email' => $theUpdatedData->user->email,
+            'status' => $theUpdatedData->status,
+        ];
+
+        if($data){
+            Mail::queue(new mailToProvider($data));
+        }
+
+        if($updateStatus){
+           
+            return redirect('/provider');
+        }
     }
 }

@@ -28,7 +28,7 @@ class FileUploadRequest extends FormRequest
         $id = request()->id;
 
         return [
-            'file'=>'required|mimetypes:image/jpeg,image/png,image/jpg,image/gif',
+            'file'=>'required|mimetypes:image/jpeg,image/png,image/jpg,image/gif|max:2048',
             'file_type' =>'required|string',
         ];
     }

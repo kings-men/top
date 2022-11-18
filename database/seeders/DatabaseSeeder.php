@@ -30,6 +30,8 @@ class DatabaseSeeder extends Seeder
             ServicesTableSeeder::class,
             CuisineSeeder::class,
             CuisineSeeder::class,
+            FeaturesSeederTable::class,
+            PlanFeaturesSeederTable::class,
         ]);
     }
 }

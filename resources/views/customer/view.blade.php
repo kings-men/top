@@ -5,96 +5,99 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="row">
-                        <div class="col-lg-12">
-                            <div class="card card-block card-stretch">
-                                <div class="card-body p-0">
-                                    <div class="d-flex justify-content-between align-items-center p-3">
-                                        <h5 class="font-weight-bold">{{$pageTitle}}</h5>
-                                        <a href="{{ route('user.index') }}   " class="float-right btn btn-sm btn-primary"><i class="fa fa-angle-double-left"></i> {{ __('messages.back') }}</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="card card-block card-stretch">
-                                <div class="card-body">
-                                <h5 class="card-title">{{__('messages.payment_details')}}</h5>
-                                    <div class="table-responsive">
-                                        <table class="table mb-0">
-                                            <thead class="table-color-heading">
-                                                <tr class="text-secondary">
-                                                <th scope="col">{{__('messages.service')}}</th>
-                                                <th scope="col">{{__('messages.date')}}</th>
-                                                <th scope="col">{{__('messages.status')}}</th>
-                                                <th scope="col">{{__('messages.provider')}}</th>
-                                                <th scope="col" class="text-right">{{__('messages.total_amount')}}</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @if(count($customerdata->booking) > 0)
-                                                    @foreach($customerdata->booking as $booking)
-                                                        <tr class="white-space-no-wrap">
-                                                            <td>{{$booking->service->name}}</td>
-                                                            <td>
-                                                                <div class="d-flex align-items-center">
-                                            
-                                                                    <div>{{date("D, d M Y", strtotime($booking->date))}}</div>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <p class="mb-0  d-flex justify-content-start align-items-center">
-                                                                    
-                                                                    {{str_replace("_"," ",ucfirst($booking->status))}}
-                                                                </p>
-                                                            </td>
-                                                            <td>{{optional($booking->provider)->display_name ?? '-' }}</td>
-                                                            <td class="text-right">{{getPriceFormat($booking->total_amount ?? '0') }}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                @else
-                                                    <tr>
-                                                        <td colspan="5" class="text-center font-weight-bold">{{__('messages.record_not_found')}}</td>
-                                                    </tr>
-                                                @endif
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="card card-block card-stretch">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{__('messages.pending_trans')}}</h5>
-                                    <div class="table-responsive-sm">
-                                        <table class="table mb-0">
-                                            <thead class="table-color-heading">
-                                                <tr class="text-secondary">
-                                                    <th scope="col">{{__('messages.service')}}</th>
-                                                    <th scope="col">{{__('messages.date')}}</th>
-                                                    <th scope="col">{{__('messages.payment_status')}}</th>
-                                                    <th scope="col" class="text-right">{{__('messages.total_amount')}}</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @if(count($customer_pending_trans) > 0)
-                                                    @foreach($customer_pending_trans as $pending)
-                                                        <tr class="white-space-no-wrap">
-                                                            <td>{{$pending->booking->service->name}}</td>
-                                                            <td> <div class="d-flex align-items-center">{{date("D, d M Y", strtotime($pending->booking->date))}}</div></td>
-                                                            <td>{{ $pending->payment_status}}</td>
-                                                            <td class="text-right">{{ getPriceFormat($pending->total_amount)}}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                @else
+                        <div class="col-sm-3 col-lg-12">
+                            <div class="card card-block p-card">
+                                <h5>{{  __('messages.company_details') }}</h5>
+                                <table class="table table-borderless mb-0">
+                                    <tbody>
+                                        @if($customerdata->companies)
+                                            @foreach($customerdata->companies as $company)
+                                               
                                                 <tr>
-                                                    <td colspan="4" class="text-center font-weight-bold">{{__('messages.record_not_found')}}</td>
+                                                    <td class="p-0">
+                                                        <p class="mb-0 text-muted">{{ __('messages.business_name') }}</p>                                        
+                                                    </td>
+                                                    <td>
+                                                        <p class="mb-0 ">{{$company->business_name? $company->business_name: '-'}}</p>
+                                                    </td>
                                                 </tr>
-                                                @endif
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                                <tr>
+                                                    <td class="p-0">
+                                                        <p class="mb-0 text-muted">{{ __('messages.restaurant_name') }}</p>                                        
+                                                    </td>
+                                                    <td>
+                                                        <p class="mb-0 ">{{$company->location->restaurant_name? $company->location->restaurant_name : "-"}}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-0">
+                                                        <p class="mb-0 text-muted">{{ __('messages.contact_name') }}</p>                                        
+                                                    </td>
+                                                    <td>
+                                                        <p class="mb-0 ">{{$company->location->contact_name? $company->location->contact_name: "-"}}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-0">
+                                                        <p class="mb-0 text-muted">{{ __('messages.email') }}</p>                                        
+                                                    </td>
+                                                    <td>
+                                                        <p class="mb-0 ">{{$company->location->email? $company->location->email :"-"}}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-0">
+                                                        <p class="mb-0 text-muted">{{ __('messages.address') }}</p>                                        
+                                                    </td>
+                                                    <td>
+                                                        <p class="mb-0 ">{{$company->location->address? $company->location->address :"-"}}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-0">
+                                                        <p class="mb-0 text-muted">{{ __('messages.city') }}</p>                                        
+                                                    </td>
+                                                    <td>
+                                                        <p class="mb-0 ">{{$company->location->city? $company->location->city : "-"}}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-0">
+                                                        <p class="mb-0 text-muted">{{ __('messages.phone_number') }}</p>                                        
+                                                    </td>
+                                                    <td>
+                                                        <p class="mb-0 ">{{$company->location->phone_number? $company->location->phone_number : "-"}}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-0">
+                                                        <p class="mb-0 text-muted">{{ __('messages.seats') }}</p>                                        
+                                                    </td>
+                                                    <td>
+                                                        <p class="mb-0 ">{{$company->location->seats? $company->location->seats : "-"}}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-0">
+                                                        <p class="mb-0 text-muted">{{ __('messages.bar') }}</p>                                        
+                                                    </td>
+                                                    <td>
+                                                        <p class="mb-0 ">{{$company->location->bar? $company->location->bar : "-"}}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="p-0">
+                                                        <p class="mb-0 text-muted">{{ __('messages.parking') }}</p>                                        
+                                                    </td>
+                                                    <td>
+                                                        <p class="mb-0 ">{{$company->location->parking? $company->location->parking : "-"}}</p>
+                                                    </td>
+                                                </tr>
+
+                                            @endforeach
+                                        @endif
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -145,5 +148,53 @@
             </div>
         </div>
     </div>
+    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card card-block card-stretch">
+                                <div class="card-body p-0">
+                                    <div class="d-flex justify-content-between align-items-center p-3">
+                                        <h5 class="font-weight-bold">{{$pageTitle}}</h5>
+                                        <a href="{{ route('user.index') }}   " class="float-right btn btn-sm btn-primary"><i class="fa fa-angle-double-left"></i> {{ __('messages.back') }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <div class="col-lg-12">
+                            <div class="card card-block card-stretch">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{__('messages.pending_trans')}}</h5>
+                                    <div class="table-responsive-sm">
+                                        <table class="table mb-0">
+                                            <thead class="table-color-heading">
+                                                <tr class="text-secondary">
+                                                    <th scope="col">{{__('messages.service')}}</th>
+                                                    <th scope="col">{{__('messages.date')}}</th>
+                                                    <th scope="col">{{__('messages.payment_status')}}</th>
+                                                    <th scope="col" class="text-right">{{__('messages.total_amount')}}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if(count($customer_pending_trans) > 0)
+                                                    @foreach($customer_pending_trans as $pending)
+                                                        <tr class="white-space-no-wrap">
+                                                            <td>{{$pending->booking->service->name}}</td>
+                                                            <td> <div class="d-flex align-items-center">{{date("D, d M Y", strtotime($pending->booking->date))}}</div></td>
+                                                            <td>{{ $pending->payment_status}}</td>
+                                                            <td class="text-right">{{ getPriceFormat($pending->total_amount)}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                @else
+                                                <tr>
+                                                    <td colspan="4" class="text-center font-weight-bold">{{__('messages.record_not_found')}}</td>
+                                                </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 </div>
 </x-master-layout>

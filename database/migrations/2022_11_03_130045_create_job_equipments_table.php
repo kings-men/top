@@ -16,9 +16,9 @@ class CreateJobEquipmentsTable extends Migration
         Schema::create('job_equipments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('job_id');
-            $table->unsignedBigInteger('equipment_id');
+            $table->unsignedInteger('equipment_id');
             $table->foreign('job_id')->references('id')->on('restaurant_jobs');
-            // $table->foreign('equipment_id')->references('id')->on('equipments');
+            $table->foreign('equipment_id')->references('id')->on('equipments');
             $table->timestamps();
         });
     }

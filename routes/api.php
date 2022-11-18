@@ -72,6 +72,9 @@ Route::group(['prefix' => 'restaurant','middleware' => ['auth:sanctum','role.val
     Route::resource('equipment', App\Http\Controllers\API\EquipmentAPIController::class);
     Route::resource('maintanance_frequencies', App\Http\Controllers\API\MaintananceFrequencyAPIController::class);
 
+    // Company Subscription
+    Route::post('plan/subscription',[App\Http\Controllers\API\StripeController::class,'craeteSubscription']);
+
 });
 
 Route::group(['prefix' => 'technician','middleware' => ['auth:sanctum','role.validate:provider']], function () {
@@ -86,8 +89,10 @@ Route::group(['prefix' => 'technician','middleware' => ['auth:sanctum','role.val
 
     //Provider Payment Methods
     Route::resource('provider_payment_methods', App\Http\Controllers\API\ProviderPaymentMethodAPIController::class);
-    //Route::put('provider_payment_methods/{id}', [App\Http\Controllers\API\ProviderPaymentMethodAPIController::class,'update']);
+
+    Route::post('job/application',[API\Provider\ProviderJobController::class,'applyJob']);
 });
+
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -105,4 +110,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('delete-user-account',[API\User\UserController::class, 'deleteUserAccount']);
     Route::post('delete-account',[API\User\UserController::class, 'deleteAccount']);
 
+    Route::resource('features', App\Http\Controllers\API\FeatureAPIController::class);
+    Route::get('plans',[ App\Http\Controllers\API\PlansController::class,'index']);
+
 });
+
+
+

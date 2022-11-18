@@ -270,7 +270,7 @@ class User extends Authenticatable implements HasMedia
     }
 
     public function companies(){
-        return $this->hasMany(Company::class, 'user_id','id');
+        return $this->hasMany(Company::class, 'user_id','id')->with('location');
     }
 
     public function company(){
@@ -279,6 +279,10 @@ class User extends Authenticatable implements HasMedia
 
     public function provider(){
         return $this->hasOne(Provider::class, 'user_id','id');
+    }
+
+    public function UserRole(){
+        return $this->belongsTo(UserRole::class, 'id', 'user_id');
     }
 
 }

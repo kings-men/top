@@ -63,14 +63,23 @@ class EquipmentAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $equipment = $this->equipmentRepository->with('frequency')->with('file')->get();
-        // $equipment = $this->equipmentRepository->all(
-        //     $request->except(['skip', 'limit']),
-        //     $request->get('skip'),
-        //     $request->get('limit')
-        // );
+        // $equipment = $this->equipmentRepository->with('frequency')->with('file')->get();
+        $query = Equipment::query()->latest()->with('frequency')->with('file');
 
-        return $this->sendResponse($equipment->toArray(), 'Equipment retrieved successfully');
+        if ($topic = $request->query('make')) {
+            $query->where('make', $topic);
+        }
+        if ($topic = $request->query('uuid')) {
+            $query->where('uuid', $topic);
+        }
+        if ($topic = $request->query('name')) {
+            $query->where('name', $topic);
+        }
+        if ($topic = $request->query('category_id')) {
+            $query->where('category_id', $topic);
+        }
+
+        return common_response( 'Equipment retrieved successfully', True, 200, $query->get() );
     }
 
     /**

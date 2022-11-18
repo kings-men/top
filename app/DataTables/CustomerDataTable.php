@@ -52,7 +52,12 @@ class CustomerDataTable extends DataTable
         if(auth()->user()->hasAnyRole(['admin'])){
             $model = $model->withTrashed();
         }
-        $query = $model->newQuery()->where('user_type','user');
+        $role_id = 6; // restaurant id
+
+        $query =  $model->whereHas('UserRole', function($query) use ($role_id) {
+                    return $query->where('role_id', $role_id);
+                });
+
         return $query;
     }
 
@@ -71,6 +76,7 @@ class CustomerDataTable extends DataTable
                 ->width(60),
             Column::make('display_name')
                 ->title(__('messages.name')),
+            Column::make('email'),
             Column::make('contact_number'),
             Column::make('address'),
             Column::make('status'),

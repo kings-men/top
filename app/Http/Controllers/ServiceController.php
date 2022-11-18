@@ -62,13 +62,6 @@ class ServiceController extends Controller
         }
        
         $services = $request->all();
-        // if(!$request->is('api/*')) {
-        //     if($request->id == null ){
-        //         if(!isset($services['logo'])){
-        //             return  redirect()->back()->withErrors(__('validation.required',['attribute' =>'logo']));
-        //         }
-        //     }
-        // }
 
         if($request->id == null && default_earning_type() === 'subscription'){
            $exceed =  get_provider_plan_limit($services['provider_id'],'service');
@@ -86,9 +79,6 @@ class ServiceController extends Controller
            }
         }
 
-        // if($request->id == null){
-        //     $services['added_by'] = auth()->user()->id;
-        // }
         if(!empty($services['is_featured']) && $services['is_featured'] == 1){
             $exceed =  get_provider_plan_limit($services['provider_id'],'featured_service');
             if(!empty($exceed)){

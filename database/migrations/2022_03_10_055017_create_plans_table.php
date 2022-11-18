@@ -18,6 +18,7 @@ class CreatePlansTable extends Migration
             $table->string('title');
             $table->string('identifier');
             $table->string('type');
+            $table->string('plan_price_id');
             $table->text('duration')->nullable();
             $table->longtext('description')->nullable();
             $table->string('plan_type')->nullable();

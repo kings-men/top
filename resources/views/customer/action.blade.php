@@ -7,17 +7,6 @@
         @if($auth_user->can('user view'))
         <a class="mr-2" href="{{ route('user.show',$user->id) }}"><i class="far fa-eye text-secondary"></i></a>
         @endif
-        @if($auth_user->can('user edit'))
-        <a class="mr-2" href="{{ route('user.create',['id' => $user->id]) }}" title="{{ __('messages.update_form_title',['form' => __('messages.user') ]) }}"><i class="fas fa-pen text-secondary"></i></a>
-        @endif
-        @if($auth_user->can('user delete'))
-        <a class="mr-2 text-danger" href="javascript:void(0)" data--submit="user{{$user->id}}" 
-            data--confirmation='true' data-title="{{ __('messages.delete_form_title',['form'=>  __('messages.user') ]) }}"
-            title="{{ __('messages.delete_form_title',['form'=>  __('messages.user') ]) }}"
-            data-message='{{ __("messages.delete_msg") }}'>
-            <i class="far fa-trash-alt"></i>
-        </a>
-        @endif
     @endif
     @if(auth()->user()->hasAnyRole(['admin']) && $user->trashed())
         <a href="{{ route('user.action',['id' => $user->id, 'type' => 'restore']) }}"

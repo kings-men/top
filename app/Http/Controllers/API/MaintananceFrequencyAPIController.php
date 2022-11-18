@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\API\CreateMaintananceFrequencyAPIRequest;
-use App\Http\Requests\API\UpdateMaintananceFrequencyAPIRequest;
-use App\Models\MaintananceFrequency;
-use App\Repositories\MaintananceFrequencyRepository;
-use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use Response;
 use Exception;
+use App\Models\Equipment;
+use Illuminate\Http\Request;
+use App\Models\MaintananceFrequency;
+use App\Http\Controllers\AppBaseController;
+use App\Repositories\MaintananceFrequencyRepository;
+use App\Http\Requests\API\CreateMaintananceFrequencyAPIRequest;
+use App\Http\Requests\API\UpdateMaintananceFrequencyAPIRequest;
 
 /**
  * Class MaintananceFrequencyController
@@ -111,8 +112,15 @@ class MaintananceFrequencyAPIController extends AppBaseController
 
         $input = $request->all();
         // $maintananceFrequency = $this->maintananceFrequencyRepository->create($input);
-        //
-        $maintananceFrequency = MaintananceFrequency::updateOrCreate(['id'=>$input['equipment_id']],$input);
+
+
+        $equipmentDetail = Equipment::where('uuid',$input['equipment_id'])->first('id');
+        if( !isset($equipmentDetail->id) ){
+            return common_response( "Equipment id is not valid", False, 400, [] );
+        }
+        $input['equipment_id'] = $equipmentDetail->id;
+        $maintananceFrequency = MaintananceFrequency::updateOrCreate(['equipment_id'=>$equipmentDetail->id],$input);
+
         $response       = $maintananceFrequency->toArray();
         $message        = 'Maintanance Frequency saved successfully';
         $status_code    = 200;

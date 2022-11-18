@@ -35,7 +35,7 @@ class Service extends Model implements  HasMedia
     }
 
     public function providerService(){
-        return $this->belongsTo(ProviderService::class, 'service_id', 'id');
+        return $this->belongsTo(ProviderService::class, 'id', 'service_id');
     }
 
 }

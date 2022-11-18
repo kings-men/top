@@ -21,6 +21,7 @@ class ServiceDataTable extends DataTable
      */
     public function dataTable($query)
     {
+
         return datatables()
             ->eloquent($query)
             ->editColumn('category_id' , function ($service){
@@ -73,10 +74,13 @@ class ServiceDataTable extends DataTable
         if(auth()->user()->hasAnyRole(['admin'])){
             $model = $model->withTrashed();
             if($this->provider_id !== null){
-                $model =  $model->where('provider_id', $this->provider_id );
+                $provider_id = $this->provider_id;
+                $model =  $model->whereHas('providerService', function($query) use ($provider_id) {
+                    return $query->where('provider_id', $provider_id);
+                });
             }
         }
-        return $model->newQuery()->orderBy('id','DESC')->myService();
+        return $model->orderBy('id','DESC')->myService();
     }
     /**
      * Get columns.
@@ -85,6 +89,15 @@ class ServiceDataTable extends DataTable
      */
     protected function getColumns()
     {
+      if($this->provider_id !== null){
+        return [
+            Column::make('DT_RowIndex')
+                ->searchable(false)
+                ->title(__('messages.srno'))
+                ->orderable(false),
+            Column::make('name'),
+        ];
+      }else{
         return [
             Column::make('DT_RowIndex')
                 ->searchable(false)
@@ -94,13 +107,13 @@ class ServiceDataTable extends DataTable
             Column::make('description'),
             Column::make('order'),
             Column::make('status'),
-            
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
                   ->width(60)
                   ->addClass('text-center'),
         ];
+      }
     }
 
     /**

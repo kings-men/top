@@ -44,11 +44,11 @@ class ServiceController extends Controller{
 
     public function getServices(Request $request){
 
-        $service = Service::get(['id','name']);
+        $service = Service::get(['id','name','description','order']);
         foreach($service as $servic){
             $servic['logo'] = getSingleMedia($servic,'service_logo',null);
         }
-        return $service;
+        return common_response( __('messages.success'), True, 200, $service );
     }
 
 }
